@@ -2,13 +2,7 @@ This is CRUD application with Auth0
 
 API Endpoints supported : 
 
-    1. GET localhost:5000/user/<id>  
-        To get user details. User id has be to be passed to get a single user details.
-
-    2. DELETE localhost:5000/user/<id>
-        To delete a user. Id has to be passed of the user to be deleted.
-
-    3. POST localhost:5000/user/ 
+    1. POST localhost:5000/user/ 
         To add a new user. A JSON payload is expected to be passed with this POST call 
 
         Example Json payload: 
@@ -29,9 +23,15 @@ API Endpoints supported :
         We can try adding new users by just changing the email to distinct values. 
         For more reference on the json payload, refer : https://auth0.com/docs/api/management/v2/users/post-users
 
+    2. GET localhost:5000/user/<id>  
+        To get user details. User id has be to be passed to get a single user details.
+
+    3. DELETE localhost:5000/user/<id>
+        To delete a user. Id has to be passed of the user to be deleted.
+
     4. PATCH localhost:5000/user/<id>
 
-    Example json payload : {
+        Example json payload : {
                                 "email": "user4@example.com",
                                 "blocked": false,
                                 "email_verified": false,
