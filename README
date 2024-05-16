@@ -42,7 +42,7 @@ API Endpoints supported :
                                 "nickname": "updated",
                                 "connection": "collabera"
                             }
-        This is to update a user. ID has to be passed in the url string. Alongside, the json payload is expected which contains 
+        This is to update a user. ID has to be passed in the url string. Alongside, the json payload is expected which contains
         the update details. 
         For more details on the patch operation, refer - https://auth0.com/docs/api/management/v2/users/patch-users-by-id
 
@@ -57,7 +57,7 @@ There are multiple ways to run the CRUD operations :
 1. Deploy a flask microservice using docker
     Perform the steps below : 
     - Clone the repository
-    - From the root dir of the repo run. Docker should be installed: 
+    - From the root dir of the repo run  (Docker should be installed): 
         docker build . -t crud:v1
         docker run -d -it -p 5000:5000 crud:v1
     - Microservice should be up and running on localhost:5000/user
@@ -91,13 +91,25 @@ There are multiple ways to run the CRUD operations :
         - create_user(user_json)
         - patch_user(user_id, user_json)
         - delete_user(user_id)
-    -   These functions will return the reponse whatever received from the auth0 API 
+    -   These functions will return the reponse aligned with responses received from the auth0 API 
 
 
-=======================================================================================================================================
+========================================================================================================================
 
 Further Improvements - 
 1. App Creds are hardcoded in the dockerfile which can be source using Kube secrets when we deploy in kubernetes
 2. Unit Tests can be added
 3. Error and exception handling can be furuther improved.
 4. For the assesment purpose the client secrets have been mentioned in the README file. This is not a recommended.
+
+
+========================================================================================================================
+
+Kubernetes Deployment - 
+
+- Added a deployment.yaml file which can be used to deploy this CRUD microservice to K8s. THIS DEPLOYMENT HAS NOT BEEN TESTED as of now 
+  as the cluster wasn't readily available with me locally. 
+- Idea is to create a deployment with 2 replicas using the image that we will build and host in some docker repository. 
+
+========================================================================================================================
+
