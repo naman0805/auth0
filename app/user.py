@@ -1,9 +1,10 @@
+import os 
 import json
 import http.client
 
 
 class Users:
-    def __init__(self, app_url):
+    def __init__(self, app_url, client_id, client_secret):
         """
         Initiates user class for CRUD Operations 
         Params : 
@@ -11,6 +12,8 @@ class Users:
         """
         self.app_url = app_url
         self.user_end_point = "/api/v2/users"
+        self.client_id = client_id
+        self.client_secret = client_secret
         self.token = self.get_token()
         self.headers = { 
                     'authorization': "Bearer "+ self.token,
@@ -18,14 +21,20 @@ class Users:
                     'Accept': 'application/json' 
                     }
 
+
     def get_token(self):
         """
         Gets the auth0 token using app credentials.
         """
         conn = http.client.HTTPSConnection(self.app_url)
-        payload = "{\"client_id\":\"fbqGGrziNaGSMCkvZMrqIuZSElJXMTLS\",\"client_secret\":\"kpnG5fZJmuxJhNL7gYRCrfHua_cUC490wPifhwS3s1fgGIdjyu4hH11d5CKJjtbf\",\"audience\":\"https://dev-vv275rnobnn6sb2u.us.auth0.com/api/v2/\",\"grant_type\":\"client_credentials\"}"
+        payload = {
+                    "grant_type" : "client_credentials",
+                    "client_id": self.client_id,
+                    "client_secret": self.client_secret,
+                    "audience":"https://dev-vv275rnobnn6sb2u.us.auth0.com/api/v2/"
+                }
         headers = { 'content-type': "application/json" }
-        conn.request("POST", "/oauth/token", payload, headers)
+        conn.request("POST", "/oauth/token", json.dumps(payload), headers)
         res = conn.getresponse()
         data = res.read()
         token = data = json.loads((data.decode("utf-8")))["access_token"]
@@ -82,4 +91,10 @@ class Users:
         data = res.read()
         return data.decode("utf-8")
 
-user_factory = Users("dev-vv275rnobnn6sb2u.us.auth0.com")
+
+app_url = os.environ["APP_URL"]
+client_id = os.environ["CLIENT_ID"]
+client_secret = os.environ["CLIENT_SECRET"]
+
+user_factory = Users("dev-vv275rnobnn6sb2u.us.auth0.com", client_id, client_secret)
+print(user_factory.get_user("auth0|6645bcd44e4cb5859ff4b06c"))

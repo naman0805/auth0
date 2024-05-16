@@ -1,0 +1,103 @@
+This is CRUD application with Auth0 
+
+API Endpoints supported : 
+
+    1. GET localhost:5000/user/<id>  
+        To get user details. User id has be to be passed to get a single user details.
+
+    2. DELETE localhost:5000/user/<id>
+        To delete a user. Id has to be passed of the user to be deleted.
+
+    3. POST localhost:5000/user/ 
+        To add a new user. A JSON payload is expected to be passed with this POST call 
+
+        Example Json payload: 
+                                {
+                                "email": "user4@example.com",
+                                "blocked": false,
+                                "email_verified": false,
+                                "app_metadata": {},
+                                "given_name": "string",
+                                "family_name": "string",
+                                "name": "string",
+                                "nickname": "string",
+                                "connection": "collabera",
+                                "password": "Abcd.1234",
+                                "verify_email": false
+                                }
+
+        We can try adding new users by just changing the email to distinct values. 
+        For more reference on the json payload, refer : https://auth0.com/docs/api/management/v2/users/post-users
+
+    4. PATCH localhost:5000/user/<id>
+
+    Example json payload : {
+                                "email": "user4@example.com",
+                                "blocked": false,
+                                "email_verified": false,
+                                "app_metadata": {},
+                                "given_name": "string",
+                                "family_name": "string",
+                                "name": "string",
+                                "nickname": "updated",
+                                "connection": "collabera"
+                            }
+        This is to update a user. ID has to be passed in the url string. Alongside, the json payload is expected which contains 
+        the update details. 
+        For more details on the patch operation, refer - https://auth0.com/docs/api/management/v2/users/patch-users-by-id
+
+
+There are multiple ways to run the CRUD operations : 
+
+1. Deploy a flask microservice using docker
+2. Deploy a flask microservice locally
+3. Use function call directly using CLI 
+
+
+1. Deploy a flask microservice using docker
+    Perform the steps below : 
+    - Clone the repository
+    - From the root dir of the repo run. Docker should be installed: 
+        docker build . -t crud:v1
+        docker run -d -it -p 5000:5000 crud:v1
+    - Microservice should be up and running on localhost:5000/user
+
+2. Deploy a flask microservice locally
+    Perform the steps below :
+    -   export APP_URL=dev-vv275rnobnn6sb2u.us.auth0.com
+    -   export CLIENT_SECRET=kpnG5fZJmuxJhNL7gYRCrfHua_cUC490wPifhwS3s1fgGIdjyu4hH11d5CKJjtbf
+    -   export CLIENT_ID=fbqGGrziNaGSMCkvZMrqIuZSElJXMTLS
+    -   python3  -m venv auth0
+    -   source auth0/bin/activate
+    -   pip install -r requirements.txt
+    -   python app/app.py 
+    -   Microservice should be up and running on localhost:5000/user
+
+3. Running CRUD operations using local python interactive shell 
+    Perform the steps below : 
+    -   Clone the repository 
+    -   RUN the commands below : 
+        -   python3  -m venv auth0
+        -   source auth0/bin/activate
+        -   pip install -r requirements.txt
+        -   export APP_URL=dev-vv275rnobnn6sb2u.us.auth0.com
+        -   export CLIENT_SECRET=kpnG5fZJmuxJhNL7gYRCrfHua_cUC490wPifhwS3s1fgGIdjyu4hH11d5CKJjtbf
+        -   export CLIENT_ID=fbqGGrziNaGSMCkvZMrqIuZSElJXMTLS
+        -   cd app/
+        -   python3 
+        -   from user import user_factory
+    -   user_factory instance has got the below functions which will be responsible for CRUD operations : 
+        - get_user(user_id)
+        - create_user(user_json)
+        - patch_user(user_id, user_json)
+        - delete_user(user_id)
+    -   These functions will return the reponse whatever received from the auth0 API 
+
+
+=======================================================================================================================================
+
+Further Improvements - 
+1. App Creds are hardcoded in the dockerfile which can be source using Kube secrets when we deploy in kubernetes
+2. Unit Tests can be added
+3. Error and exception handling can be furuther improved.
+4. For the assesment purpose the client secrets have been mentioned in the README file. This is not a recommended.

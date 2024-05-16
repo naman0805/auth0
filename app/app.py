@@ -13,7 +13,7 @@ def user(user_id = None):
             res = user_factory.get_user(user_id)
             return res
         elif request.method == "PATCH":
-            res = user_factory.update_user(user_id, request.data)
+            res = user_factory.update_user(user_id, json.loads(request.data))
         elif request.method == "DELETE":
             res = user_factory.delete_user(user_id)
         return res, 200
